@@ -39,6 +39,7 @@ make
 sudo make install
 
 # WoodenBeaver sounds
+echo "Put connect/disconnect sound files in place\n"
 mkdir -p /usr/local/share/sounds/WoodenBeaver/stereo
 if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav ]; then
     cp sound/device-added.wav /usr/local/share/sounds/WoodenBeaver/stereo/
@@ -48,12 +49,15 @@ if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
 fi
 
 # Bluetooth settings - Class = 0x200414 / 0x200428
+echo "Performing bluetooth settings in various files.\n"
+echo "Updating audio.conf\n"
 cat <<'EOF' > /etc/bluetooth/audio.conf
 [General]
 Class = 0x200428
 Enable = Source,Sink,Media,Socket
 EOF
 
+echo "Updating main.conf\n"
 cat <<'EOF' > /etc/bluetooth/main.conf
 [General]
 Class = 0x200428
@@ -63,6 +67,7 @@ AutoEnable=true
 EOF
 
 # Make Bluetooth discoverable after initialisation
+echo "Make Bluetooth discoverable after initialisation\n"
 mkdir -p /lib/systemd/system/bthelper@.service.d
 cat <<'EOF' > /lib/systemd/system/bthelper@.service.d/override.conf
 [Service]
@@ -72,6 +77,7 @@ ExecStartPost=/bin/hciconfig %I sspmode 1
 EOF
 
 # Bluetooth agent
+echo "Create the Bluetooth agent (its the thing that allows your devices to connect)\n"
 cat <<'EOF' > /usr/local/bin/a2dp-agent.py
 #!/usr/bin/python
 from __future__ import absolute_import, print_function, unicode_literals
@@ -188,6 +194,7 @@ systemctl daemon-reload
 systemctl enable bluealsa-aplay
 
 # Bluetooth udev script
+echo "Bluetooth udev script\n"
 cat <<'EOF' > /usr/local/bin/bluetooth-udev
 #!/bin/bash
 if [[ ! $NAME =~ ^\"([0-9A-F]{2}[:-]){5}([0-9A-F]{2})\"$ ]]; then exit 0; fi
@@ -215,5 +222,5 @@ cat <<'EOF' > /etc/udev/rules.d/99-bluetooth-udev.rules
 SUBSYSTEM=="input", GROUP="input", MODE="0660"
 KERNEL=="input[0-9]*", RUN+="/usr/local/bin/bluetooth-udev"
 EOF
-
+echo "Done! After rebooting you should be able to connect your devices. Now type: sudo reboot\n"
 
