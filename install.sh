@@ -16,6 +16,23 @@ if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
     cp files/device-removed.wav /usr/local/share/sounds/WoodenBeaver/stereo/
 fi
 
+# Bluetooth settings - Class = 0x200414 / 0x200428
+cat <<'EOF' > /etc/bluetooth/audio.conf
+[General]
+Class = 0x200428
+Enable = Source,Sink,Media,Socket
+EOF
+
+cat <<'EOF' > /etc/bluetooth/main.conf
+[General]
+Class = 0x200428
+DiscoverableTimeout = 0
+[Policy]
+AutoEnable=true
+EOF
+
+
+
 #install dependencies
 echo "installing dependencies...\n"
 sudo apt-get update
