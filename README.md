@@ -13,7 +13,7 @@ Devices like phones, tablets and computers can play audio to the volumio Raspber
 
 ## Installation
 
-The installation script asks whether to install each component.
+SSH into your Volumio Raspi and copy/paste each of these lines.
 
     wget -q https://github.com/myichimoku/VolumioBluetooth/archive/master.zip
     sudo apt-get install unzip
