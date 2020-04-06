@@ -16,6 +16,7 @@ Devices like phones, tablets and computers can play audio to the volumio Raspber
 SSH into your Volumio Raspi and copy/paste each of these lines.
 
     wget -q https://github.com/myichimoku/VolumioBluetooth/archive/master.zip
+    sudo apt-get update
     sudo apt-get install unzip
     unzip master.zip
     rm master.zip
