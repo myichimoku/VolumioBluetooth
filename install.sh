@@ -16,6 +16,7 @@ sudo apt-get install libusb-dev libglib2.0-dev libudev-dev libical-dev libreadli
 #Compile Bluez & Alsa
 
 echo "Compiling Bluez. This can take up ~20 minutes...\n"
+sudo rm -fR bluez/
 git clone git://git.kernel.org/pub/scm/bluetooth/bluez.git
 cd bluez
 git checkout 5.48
