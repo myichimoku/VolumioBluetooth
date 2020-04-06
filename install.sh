@@ -7,6 +7,15 @@ echo -n "Do you want to install Volumio Bluetooth Audio (BlueALSA)? [y/N] "
 read REPLY
 if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
 
+# WoodenBeaver sounds
+mkdir -p /usr/local/share/sounds/WoodenBeaver/stereo
+if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav ]; then
+    cp files/device-added.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+fi
+if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
+    cp files/device-removed.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+fi
+
 #install dependencies
 echo "installing dependencies...\n"
 sudo apt-get update
