@@ -22,7 +22,8 @@ SSH into your Volumio Raspi and copy/paste each of these lines.
     rm master.zip
 
     cd VolumioBluetooth-master
-    ./install.sh
+    sudo chmod 755 install.sh
+    sudo ./install.sh
 
 ### Bluetooth
 
