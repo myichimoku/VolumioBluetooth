@@ -8,7 +8,7 @@ read REPLY
 if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
 
 #install dependencies
-echo "installing dependencies...\n"
+echo "Installing dependencies...\n"
 sudo apt-get update
 sudo apt-get install dh-autoreconf libasound2-dev libortp-dev pi-bluetooth
 sudo apt-get install libusb-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev libsbc1 libsbc-dev
