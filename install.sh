@@ -13,15 +13,15 @@ sudo apt-get update
 sudo apt-get install dh-autoreconf libasound2-dev libortp-dev pi-bluetooth
 sudo apt-get install libusb-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev libsbc1 libsbc-dev
 
+
 #Compile Bluez & Alsa
 
 echo "Compiling Bluez. This can take up ~20 minutes...\n"
-sudo rm -fR bluez/
-git clone git://git.kernel.org/pub/scm/bluetooth/bluez.git
-cd bluez
-git checkout 5.48
-./bootstrap
+wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.54.tar.xz
+tar xvf bluez-5.54.tar.xz
+cd bluez-5.54
 ./configure --enable-library --enable-experimental --enable-tools
+
 make
 sudo make install
 
