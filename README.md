@@ -34,6 +34,8 @@ Sets up Bluetooth, adds a simple agent that accepts every connection, and enable
 These scripts are tested and work on a current (as of April 2020) Volumio 2 setup on Raspberry Pi. Depending on your setup (board, configuration, sound module, Bluetooth adapter) and your preferences, you might need to adjust the scripts. They are held as simple as possible and can be used as a starting point for additional adjustments.
 
 ## References
+https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/installation
+
 https://github.com/nicokaiser/rpi-audio-receiver
 
 https://forum.volumio.org/volumio-bluetooth-receiver-t8937.html
