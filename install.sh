@@ -43,10 +43,12 @@ sudo make install
 echo "Put connect/disconnect sound files in place\n"
 mkdir -p /usr/local/share/sounds/WoodenBeaver/stereo
 if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav ]; then
-    cp sound/device-added.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+    sudo cp sound/device-added.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+    sudo chown volumio.volumio device-added.wav
 fi
 if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
-    cp sound/device-removed.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+    sudo cp sound/device-removed.wav /usr/local/share/sounds/WoodenBeaver/stereo/
+    sudo chown volumio.volumio device-removed.wav
 fi
 
 # Bluetooth settings - Class = 0x200414 / 0x200428
