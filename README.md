@@ -35,6 +35,7 @@ These scripts are tested and work on a current (as of April 2020) Volumio 2 setu
 
 ## References
 https://learn.adafruit.com/install-bluez-on-the-raspberry-pi/installation
+
 http://www.bluez.org/download/
 
 https://github.com/nicokaiser/rpi-audio-receiver
