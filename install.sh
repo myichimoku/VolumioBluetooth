@@ -8,15 +8,18 @@ read REPLY
 if [[ ! "$REPLY" =~ ^(yes|y|Y)$ ]]; then exit 0; fi
 
 #install dependencies
-echo "Installing dependencies...\n"
+echo " "
+echo "Installing dependencies..."
+echo " "
 sudo apt-get update
 sudo apt-get install dh-autoreconf libasound2-dev libortp-dev pi-bluetooth
 sudo apt-get install libusb-dev libglib2.0-dev libudev-dev libical-dev libreadline-dev libsbc1 libsbc-dev
 
 
 #Compile Bluez & Alsa
-
-echo "Compiling Bluez. This can take up ~20 minutes...\n"
+echo " "
+echo "Compiling Bluez. This can take up ~20 minutes..."
+echo " "
 wget http://www.kernel.org/pub/linux/bluetooth/bluez-5.54.tar.xz
 tar xvf bluez-5.54.tar.xz
 cd bluez-5.54
@@ -29,7 +32,9 @@ sudo ln -s /usr/local/lib/libbluetooth.so.3.18.16 /usr/lib/arm-linux-gnueabihf/l
 sudo ln -s /usr/local/lib/libbluetooth.so.3.18.16 /usr/lib/arm-linux-gnueabihf/libbluetooth.so.3
 sudo ln -s /usr/local/lib/libbluetooth.so.3.18.16 /usr/lib/arm-linux-gnueabihf/libbluetooth.so.3.18.16
 
-echo "Compiling Bluez-Alsa.\n"
+echo " "
+echo "Compiling Bluez-Alsa."
+echo " "
 cd
 git clone https://github.com/Arkq/bluez-alsa.git
 cd bluez-alsa
@@ -52,15 +57,19 @@ if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
 fi
 
 # Bluetooth settings - Class = 0x200414 / 0x200428
-echo "Performing bluetooth settings in various files.\n"
-echo "Updating audio.conf\n"
+echo " "
+echo "Performing bluetooth settings in various files."
+echo "Updating audio.conf"
+echo " "
 cat <<'EOF' > /etc/bluetooth/audio.conf
 [General]
 Class = 0x200428
 Enable = Source,Sink,Media,Socket
 EOF
 
-echo "Updating main.conf\n"
+echo " "
+echo "Updating main.conf"
+echo " "
 cat <<'EOF' > /etc/bluetooth/main.conf
 [General]
 Class = 0x200428
@@ -70,7 +79,9 @@ AutoEnable=true
 EOF
 
 # Make Bluetooth discoverable after initialisation
-echo "Make Bluetooth discoverable after initialisation\n"
+echo " "
+echo "Make Bluetooth discoverable after initialisation"
+echo " "
 mkdir -p /lib/systemd/system/bthelper@.service.d
 cat <<'EOF' > /lib/systemd/system/bthelper@.service.d/override.conf
 [Service]
@@ -80,7 +91,9 @@ ExecStartPost=/bin/hciconfig %I sspmode 1
 EOF
 
 # Bluetooth agent
-echo "Create the Bluetooth agent (its the thing that allows your devices to connect)\n"
+echo " "
+echo "Create the Bluetooth agent (its the thing that allows your devices to connect: a2dp-agent.py)"
+echo " "
 cat <<'EOF' > /usr/local/bin/a2dp-agent.py
 #!/usr/bin/python
 from __future__ import absolute_import, print_function, unicode_literals
@@ -154,6 +167,9 @@ if __name__ == '__main__':
 EOF
 chmod 755 /usr/local/bin/a2dp-agent.py
 
+echo " "
+echo "Configuring  a2dp-agent.service"
+echo " "
 cat <<'EOF' > /lib/systemd/system/a2dp-agent.service
 [Unit]
 Description=Bluetooth A2DP Agent
@@ -169,6 +185,9 @@ EOF
 systemctl enable a2dp-agent.service
 
 # BlueALSA
+echo " "
+echo "Configuring bluealsa.service.d"
+echo " "
 mkdir -p /lib/systemd/system/bluealsa.service.d
 cat <<'EOF' > /lib/systemd/system/bluealsa.service.d/override.conf
 [Service]
@@ -178,6 +197,9 @@ RestartSec=5
 Restart=always
 EOF
 
+echo " "
+echo "Configuring bluealsa-aplay.service"
+echo " "
 cat <<'EOF' > /lib/systemd/system/bluealsa-aplay.service
 [Unit]
 Description=BlueALSA aplay %I -dhw:1,0
@@ -197,7 +219,9 @@ systemctl daemon-reload
 systemctl enable bluealsa-aplay
 
 # Bluetooth udev script
-echo "Bluetooth udev script\n"
+echo " "
+echo "Creating Bluetooth udev script"
+echo " "
 cat <<'EOF' > /usr/local/bin/bluetooth-udev
 #!/bin/bash
 if [[ ! $NAME =~ ^\"([0-9A-F]{2}[:-]){5}([0-9A-F]{2})\"$ ]]; then exit 0; fi
@@ -208,7 +232,7 @@ if [ "$action" = "add" ]; then
         aplay -q /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav
     fi
     # disconnect wifi to prevent dropouts
-    #ifconfig wlan0 down &
+    ifconfig wlan0 down &
 fi
 if [ "$action" = "remove" ]; then
     if [ -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
@@ -221,9 +245,12 @@ fi
 EOF
 chmod 755 /usr/local/bin/bluetooth-udev
 
+echo " "
+echo "Creating udev rules"
+echo " "
 cat <<'EOF' > /etc/udev/rules.d/99-bluetooth-udev.rules
 SUBSYSTEM=="input", GROUP="input", MODE="0660"
 KERNEL=="input[0-9]*", RUN+="/usr/local/bin/bluetooth-udev"
 EOF
-echo "Done! After rebooting you should be able to connect your devices. Now type: sudo reboot\n"
+echo "Done! After rebooting you should be able to connect your devices. Now type: sudo reboot"
 
