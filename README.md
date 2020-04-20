@@ -1,6 +1,7 @@
 # VolumioBluetooth
 
 A simple, light weight Bluetooth audio receiver for volumio 2 on Raspi.
+This isn't functioning correctly at this time. Help appreciated.
 
 ## Features
 
