@@ -49,11 +49,11 @@ echo "Put connect/disconnect sound files in place\n"
 mkdir -p /usr/local/share/sounds/WoodenBeaver/stereo
 if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav ]; then
     sudo cp sound/device-added.wav /usr/local/share/sounds/WoodenBeaver/stereo/
-    sudo chown volumio.volumio device-added.wav
+    sudo chown volumio:volumio /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav
 fi
 if [ ! -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
     sudo cp sound/device-removed.wav /usr/local/share/sounds/WoodenBeaver/stereo/
-    sudo chown volumio.volumio device-removed.wav
+    sudo chown volumio:volumio /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav
 fi
 
 # Bluetooth settings - Class = 0x200414 / 0x200428
@@ -232,7 +232,7 @@ if [ "$action" = "add" ]; then
         aplay -q /usr/local/share/sounds/WoodenBeaver/stereo/device-added.wav
     fi
     # disconnect wifi to prevent dropouts
-    ifconfig wlan0 down &
+    #ifconfig wlan0 down &
 fi
 if [ "$action" = "remove" ]; then
     if [ -f /usr/local/share/sounds/WoodenBeaver/stereo/device-removed.wav ]; then
